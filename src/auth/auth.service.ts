@@ -8,6 +8,7 @@ import { compare } from '../helper/hash';
 import { CreatePersonalAccessTokenDto } from './../peronal_access_token/dto/create-personal_access_token.dto';
 import { PeronalAccessTokenService } from './../peronal_access_token/personal_access_token.service';
 import { v4 as uuidv4 } from 'uuid';
+import { encryptData } from '../helper/hash';
 
 @Injectable()
 export class AuthService {
@@ -36,13 +37,14 @@ export class AuthService {
 
     async login(loginDto: LoginDto) {
         let user = await this.validateUser(loginDto);
-        const payload = { hash: uuidv4() };
+        let tokenMint = uuidv4();
+        let tokenEncrypted = await encryptData(tokenMint);
+        const payload = { hash: tokenEncrypted };
         const token = this.jwtService.sign(payload);
         const tokenDecode = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
         const tokenExp = new Date(tokenDecode.exp * 1000);
-        const tokenHash = tokenDecode.hash;
         const createPersonalAccessTokenDto = new CreatePersonalAccessTokenDto();
-        createPersonalAccessTokenDto.token = tokenHash;
+        createPersonalAccessTokenDto.token = tokenMint;
         createPersonalAccessTokenDto.user = user;
         createPersonalAccessTokenDto.expiration_date = tokenExp;
         let access_token = await this.peronalAccessTokenService.create(createPersonalAccessTokenDto);
