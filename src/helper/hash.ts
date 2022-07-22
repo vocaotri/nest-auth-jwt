@@ -4,12 +4,12 @@ const saltOrRounds = 10;
 var algorithm = 'aes256';
 const key = 'Password used to generate key';
 
-const encryptData = async (data: string) => {
+const encryptData = (data: string) => {
     const cipher = createCipher(algorithm, key);
     return cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
 }
 
-const decryptData = async (dataEncryoted: any) => {
+const decryptData = (dataEncryoted: any) => {
     const decipher = createDecipher(algorithm, key);
     return decipher.update(dataEncryoted, 'hex', 'utf8') + decipher.final('utf8');
 }

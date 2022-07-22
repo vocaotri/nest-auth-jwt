@@ -36,9 +36,9 @@ export class AuthService {
     }
 
     async login(loginDto: LoginDto) {
-        let user = await this.validateUser(loginDto);
-        let tokenMint = uuidv4();
-        let tokenEncrypted = await encryptData(tokenMint);
+        const user = await this.validateUser(loginDto);
+        const tokenMint = uuidv4();
+        const tokenEncrypted = encryptData(tokenMint);
         const payload = { hash: tokenEncrypted };
         const token = this.jwtService.sign(payload);
         const tokenDecode = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
@@ -47,7 +47,7 @@ export class AuthService {
         createPersonalAccessTokenDto.token = tokenMint;
         createPersonalAccessTokenDto.user = user;
         createPersonalAccessTokenDto.expiration_date = tokenExp;
-        let access_token = await this.peronalAccessTokenService.create(createPersonalAccessTokenDto);
+        const access_token = await this.peronalAccessTokenService.create(createPersonalAccessTokenDto);
         await this.usersService.updateToken(user._id, access_token);
         return {
             access_token: token,

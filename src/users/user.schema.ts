@@ -51,10 +51,10 @@ UserSchema.pre('save', async function (this: UserDocument) {
         this.password = await hash(this.password);
     }
     if (this.isModified('first_name')) {
-        this.first_name = await encryptData(this.first_name);
+        this.first_name = encryptData(this.first_name);
     }
     if (this.isModified('last_name')) {
-        this.last_name = await encryptData(this.last_name);
+        this.last_name = encryptData(this.last_name);
     }
 });
 export { UserSchema };
