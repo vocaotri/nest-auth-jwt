@@ -26,9 +26,17 @@ export class AuthService {
         throw new UnauthorizedException();
     }
 
+    async validateToken(token: string): Promise<User | null> {
+        const user = await this.usersService.findOne(token);
+        if (user) {
+            return user;
+        }
+        throw new UnauthorizedException();
+    }
+
     async login(loginDto: LoginDto) {
         let user = await this.validateUser(loginDto);
-        const payload = { id: user._id, hash: uuidv4() };
+        const payload = { hash: uuidv4() };
         const token = this.jwtService.sign(payload);
         const tokenDecode = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
         const tokenExp = new Date(tokenDecode.exp * 1000);
