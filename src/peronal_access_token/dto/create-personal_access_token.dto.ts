@@ -6,5 +6,5 @@ export class CreatePersonalAccessTokenDto {
     @IsNotEmpty()
     user: User;
     @IsNotEmpty()
-    expiration_date: string;
+    expiration_date: Date;
 }

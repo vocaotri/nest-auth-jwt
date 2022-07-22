@@ -7,6 +7,7 @@ import { User } from '../users/user.schema';
 import { compare } from '../helper/hash';
 import { CreatePersonalAccessTokenDto } from './../peronal_access_token/dto/create-personal_access_token.dto';
 import { PeronalAccessTokenService } from './../peronal_access_token/personal_access_token.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -27,22 +28,24 @@ export class AuthService {
 
     async login(loginDto: LoginDto) {
         let user = await this.validateUser(loginDto);
-        const payload = { id: user._id };
+        const payload = { id: user._id, hash: uuidv4() };
         const token = this.jwtService.sign(payload);
         const tokenDecode = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-        const tokenExp = tokenDecode.exp;
+        const tokenExp = new Date(tokenDecode.exp * 1000);
+        const tokenHash = tokenDecode.hash;
         const createPersonalAccessTokenDto = new CreatePersonalAccessTokenDto();
-        createPersonalAccessTokenDto.token = token;
+        createPersonalAccessTokenDto.token = tokenHash;
         createPersonalAccessTokenDto.user = user;
         createPersonalAccessTokenDto.expiration_date = tokenExp;
-
+        let access_token = await this.peronalAccessTokenService.create(createPersonalAccessTokenDto);
+        await this.usersService.updateToken(user._id, access_token);
         return {
             access_token: token,
         };
     }
 
     async findByID(id: string) {
-        return await this.usersService.findOne(id);
+        return await this.usersService.findById(id);
     }
 
     async register(createUserDto: CreateUserDto) {

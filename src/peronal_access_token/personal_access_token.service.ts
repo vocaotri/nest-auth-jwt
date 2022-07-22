@@ -11,4 +11,7 @@ export class PeronalAccessTokenService {
         const createdPersonalAccessToken = new this.personalAccessTokenModel(createPersonalAccessTokenDto);
         return createdPersonalAccessToken.save();
     }
+    async findByToken(token: string): Promise<PersonalAccessToken> {
+        return await this.personalAccessTokenModel.findOne({ token: token });
+    }
 }
