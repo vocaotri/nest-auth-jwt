@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import { User } from '../users/user.schema';
 export type PersonalAccessTokenDocument = PersonalAccessToken & mongoose.Document;
 @Schema({
+    collection: 'personal_access_tokens',
     timestamps: true,
 })
 export class PersonalAccessToken {
