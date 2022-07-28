@@ -8,7 +8,6 @@ import { decryptData } from './helper/hash';
 import { LoginDto } from './auth/dto/login.dto';
 import { fileSize } from './users/constant';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { writeFileSync } from 'fs';
 import { formatLink } from './helper/format-link';
@@ -23,8 +22,6 @@ export class AppController {
   async login(@Body() LoginDto: LoginDto) {
     return this.authService.login(LoginDto);
   }
-
-
 
   @Post('auth/register')
   @UseInterceptors(FileInterceptor('avatar'))
@@ -56,6 +53,8 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
-    return req.user;
+    const auth = req.user;
+    // do something with the user login
+    return auth;
   }
 }

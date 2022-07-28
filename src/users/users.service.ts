@@ -15,7 +15,6 @@ export class UsersService {
     async findById(id: string): Promise<User> {
         return await this.userModel.findById(id).populate('access_token');
     }
-
     async create(createUserDto: CreateUserDto): Promise<User> {
         const createdUser = new this.userModel(createUserDto);
         return createdUser.save();

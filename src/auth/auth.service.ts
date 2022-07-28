@@ -8,7 +8,7 @@ import { compare } from '../helper/hash';
 import { CreatePersonalAccessTokenDto } from './../peronal_access_token/dto/create-personal_access_token.dto';
 import { PeronalAccessTokenService } from './../peronal_access_token/personal_access_token.service';
 import { v4 as uuidv4 } from 'uuid';
-import { encryptData } from '../helper/hash';
+import { encryptData, decryptData } from '../helper/hash';
 
 @Injectable()
 export class AuthService {
@@ -27,9 +27,13 @@ export class AuthService {
         throw new UnauthorizedException();
     }
 
-    async validateToken(token: string): Promise<User | null> {
-        const user = await this.usersService.findOne(token);
-        if (user) {
+    async validateToken(tokenHash: string): Promise<User | null> {
+        let tokenDecrypt = decryptData(tokenHash);
+        let userAccessToken = await this.peronalAccessTokenService.findByToken(tokenDecrypt);
+        if (userAccessToken && userAccessToken.user) {
+            const user = userAccessToken.user;
+            user.first_name = decryptData(user.first_name);
+            user.last_name = decryptData(user.last_name);
             return user;
         }
         throw new UnauthorizedException();

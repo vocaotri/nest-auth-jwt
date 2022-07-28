@@ -35,6 +35,7 @@ export class User {
     avatar: string;
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'PersonalAccessToken' }] })
+    @Exclude()
     access_token: PersonalAccessToken[];
 
     full_name: string;

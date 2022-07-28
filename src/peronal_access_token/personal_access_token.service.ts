@@ -11,7 +11,10 @@ export class PeronalAccessTokenService {
         const createdPersonalAccessToken = new this.personalAccessTokenModel(createPersonalAccessTokenDto);
         return createdPersonalAccessToken.save();
     }
-    async findByToken(token: string): Promise<PersonalAccessToken> {
-        return await this.personalAccessTokenModel.findOne({ token: token });
+    async findByToken(token: string): Promise<PersonalAccessToken | null> {
+        return await this.personalAccessTokenModel.findOne({
+            token: token,
+            expiration_date: { $gte: new Date() }
+        }).populate('user');
     }
 }
