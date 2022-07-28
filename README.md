@@ -29,20 +29,26 @@
 ## Installation
 
 ```bash
+$ git clone https://github.com/vocaotri/nest-auth-jwt.git
+
+$ cd nest-auth-jwt
+
 $ npm install
+
+$ cp .env.example .env
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ npm run start (nest start)
 
 # watch mode
-$ npm run start:dev
+$ npm run start:dev (nest start --watch)
 
 # production mode
-$ npm run start:prod
+$ npm run start:prod (node dist/main)
 ```
 
 ## Test
@@ -57,6 +63,14 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Features
+- Register ( upload avatar, hash info user)
+- - url: /auth/login
+- Login ( jwt token => peronal access token)
+- - url: /auth/register
+- Get profile ( jwt token => passport: peronal access token)
+- - url: /profile
 
 ## Support
 
