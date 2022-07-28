@@ -13,6 +13,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     handleRequest(err, user, info) {
         if(this.role == 'user' && user.is_admin)
             throw new ForbiddenException()
+        if(this.role == 'admin' && !user.is_admin)
+            throw new ForbiddenException()
         
         // You can throw an exception based on either "info" or "err" arguments
         if (err || !user) {
