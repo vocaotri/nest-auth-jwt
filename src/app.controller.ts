@@ -4,7 +4,6 @@ import { AuthService } from './auth/auth.service';
 import { CreateUserDto } from './users/dto/create-user.dto';
 import MongooseClassSerializerInterceptor from './helper/mongooseClassSerializer.interceptor';
 import { User } from './users/user.schema';
-import { decryptData } from './helper/hash';
 import { LoginDto } from './auth/dto/login.dto';
 import { fileSize } from './users/constant';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -37,17 +36,6 @@ export class AppController {
     let avatarURL = formatLink('images/avatars/' + nameFile);
     createUserDto.avatar = avatarURL;
     return this.authService.register(createUserDto);
-  }
-
-  @Get('test-find')
-  async testFind() {
-    let userFind = await this.authService.findByID('62d9108251d339be3ddc6911');
-    var firstNameDecrypted = decryptData(userFind.first_name);
-    var lastNameDecrypted = decryptData(userFind.last_name);
-    userFind.first_name = firstNameDecrypted;
-    userFind.last_name = lastNameDecrypted;
-    userFind.full_name = firstNameDecrypted + ' ' + lastNameDecrypted;
-    return userFind;
   }
 
   @UseGuards(JwtAuthGuard)
