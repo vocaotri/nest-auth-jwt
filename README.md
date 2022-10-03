@@ -67,10 +67,16 @@ $ npm run test:cov
 ## Features
 - Register ( upload avatar, hash info user)
 - - url: /auth/login
-- Login ( jwt token => peronal access token)
+- Login ( email, password => peronal access token)
 - - url: /auth/register
+- Logout (jwt token => message)
+- - url: /auth/logout
+- Refresh token ( jwt token => peronal access token)
+- - url: /auth/refresh-token
 - Get profile ( jwt token => passport: peronal access token)
 - - url: /profile
+
+### Postman [here](https://documenter.getpostman.com/view/9543375/2s83tJEpGy)
 
 ## Support
 
