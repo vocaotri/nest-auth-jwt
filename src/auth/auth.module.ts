@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
-import { UsersModule } from '../users/users.module';
-import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { PassportModule } from '@nestjs/passport';
+import { UsersModule } from '../users/users.module';
 import { ExistValidator } from '../users/validates/user_exist';
 import { PeronalAccessTokenModule } from './../peronal_access_token/personal_access_token.module';
-import {PeronalAccessTokenService} from './../peronal_access_token/personal_access_token.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { jwtConstants } from './constants';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -21,5 +21,6 @@ import {PeronalAccessTokenService} from './../peronal_access_token/personal_acce
   ],
   providers: [AuthService, JwtStrategy, ExistValidator],
   exports: [AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule { }
