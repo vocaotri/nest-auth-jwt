@@ -39,6 +39,10 @@ export class User {
     access_token: PersonalAccessToken[];
 
     full_name: string;
+
+    @Prop()
+    @Exclude()
+    current_access_token_id: mongoose.Types.ObjectId;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);

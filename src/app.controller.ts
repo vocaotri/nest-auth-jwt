@@ -1,4 +1,4 @@
-import { Controller, Request, Get, Post, UseGuards, Body, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
+import { Controller, Request, Get, Post, UseGuards, Body, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Delete } from '@nestjs/common';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { CreateUserDto } from './users/dto/create-user.dto';
@@ -44,5 +44,21 @@ export class AppController {
     const auth = req.user;
     // do something with the user login
     return auth;
+  }
+
+  @Post('auth/refresh-token')
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async refreshToken(@Request() req, @Body('refresh_token') refreshToken: string) {
+    const auth =  req.user;
+    return this.authService.refreshToken(auth, refreshToken);
+  }
+
+  @Delete('auth/logout')
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async logout(@Request() req) {
+    const auth =  req.user;
+    return this.authService.logout(auth);
   }
 }

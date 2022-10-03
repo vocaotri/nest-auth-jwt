@@ -7,4 +7,6 @@ export class CreatePersonalAccessTokenDto {
     user: User;
     @IsNotEmpty()
     expiration_date: Date;
+    refresh_token: string;
+    refresh_expiration_date: Date;
 }
