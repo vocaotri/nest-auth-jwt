@@ -8,6 +8,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
+import { JwtSocketIoStrategy } from './jwt-socketio.strategy';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { JwtStrategy } from './jwt.strategy';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  providers: [AuthService, JwtStrategy, ExistValidator],
+  providers: [AuthService, JwtStrategy, JwtSocketIoStrategy, ExistValidator],
   exports: [AuthService],
   controllers: [AuthController],
 })
