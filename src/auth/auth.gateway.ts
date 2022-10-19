@@ -17,7 +17,7 @@ import { jwtConstants } from 'src/auth/constants';
 import { AuthService } from './../auth/auth.service';
 @WebSocketGateway({
     cors: {
-        origin: "*",
+        origin: "*", // allow for any domain
         methods: ["GET", "POST"]
     }
 })
